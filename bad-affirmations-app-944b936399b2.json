@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "bad-affirmations-app",
+  "private_key_id": "944b936399b29c2c85038e5db715b3cd87a957a9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDQJTQL5z4oKM2l\n/vl3Lbu2TjqyK8N/iijjxtBB2KTdYRraEobV6duyyTYH1k6DvJydxHUepYkFDiop\nn9LxYC7GpxzGzFr/hoLIgYwXuhWljmEaMGbMEfMoifjcRuJbg57XaQewOJU6OFJJ\nk9PSpifftYpormsmARYxrKs+Lft2WdS7mtYeQtrTd+/6ob6njRl0J8qQPi44U52H\nHyTFG5853h9zNWkzGttP6iZ3DmCrUmy+vWh2FWNC3SmqTZvjLX7sAKJ8sbD+82f1\n0deSatd6F1PMAtcEgQX4FBHQgDCOC9PuShcG0KJsSopTnCUGwQXVQX4DezCgZ2YF\nAZWEtC5ZAgMBAAECggEAPMuBBjEGoKg6WM++gabj+v2ie0P5GBl8k/sP/QuQK/Ee\n7K8YnwZtWy0WEPfxetzuSc6F/uuOt+FJQ1shO8tCHlfVOeOaeKQLMxFTn+KETBTo\nG8QjYluj0CVsgLpbhytMi9JroncEbzrgHgmFhzNs1hSqVqULOtB6cQvkAIdhuVFA\nwFXD1KzqAHD1F0RzXHpwH9PwO/sPQrfi5IQSl85Ebuw3x/e/g8rXsmL5T0d+I8aU\nM7r+wLSe3JZQDjjZIBJsRVUlv2gUeHSdA3Z0+98zAZHKt8x+2PDifoka/F2TVwev\nglz2Q5/38LYWAUH9SFCaoW03LbCgy4EBwEhMvDLPOQKBgQDtmTuE9nuaM0Ue6Osb\nFm8VE5IYnkZ2O4uc7fcrO8Eu0hmpR/RSaE5s2W8m+24mksLuhJPKj1k44JY4Ul9j\nILmWDtQ95zti/MKjs0O2LrJOLy6WGAlWS225TGJWF2AiGjoG4WiecVnTu8iCFwgJ\nfGEgigbnkd3WleFUKuZsme5IZwKBgQDgRAOEelZ537zXAQ5PCE6Aj+1KztuQUutk\n+eOKNxfjYHTnvHj4rkEVgtQtl5fPK1q4eqJ7bYYdXlRcg2/Et34K1iWH9px5mYo3\nnuvY+tCY5yFjaLe/uIRsDZ9B145roesfpVXCuFAcD5Ft2+nMmsyO2Hv6JXDB2KRw\nJXP5fLabPwKBgGGYl8I+HPdyJ+pScoBl7qsRpulF2lumieqkNOslWG0LEE9gpxNS\nlSRRDD9O+CgQENI40xxZVaTvW8U20Me/IXxqCvSCjvpSKQFlGWM0OzmyV8h/hxZT\nVXbP0XTblTls3HkHDhpHJUa709jb7Qk4dg0PpVZprF4AotYX6R6i/CXxAoGAawPp\njcj3BPcf3JUTZ+E13KFRgVYObeMzkp6v1p+NlaHMh1xneXtlcUdZylvBREmS498Z\nM77CtbbymKbbqcpJqhAgHq4uYtRCoWIDdynQanY4d4Bb1m/NOOaTLU8YFgJQ+Wvi\n7aUYDRvcsMi02z6vCCcDmg1NriKb7SviGJZLaO8CgYBx8OT3TueGiCiyMcnmcdKZ\nvBDEA3A0mOcCRIDJ+xa3waSI1N3UQ6Tl5gDVGAANCUcc+8LKy/Bcnf9HELu0zTKx\nWn76KztLClhtxXMGeA3MGSU+Nq72hnYcYWfwK1rNbzLlvkUbzEEPFViLU3Pjm8tR\nfzQKnxRDARDA8D7DSbqJmw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "bad-affirmations-app@bad-affirmations-app.iam.gserviceaccount.com",
+  "client_id": "117512967648277091525",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bad-affirmations-app%40bad-affirmations-app.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
