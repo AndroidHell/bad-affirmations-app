@@ -1,0 +1,4 @@
+need to fixed how it pulls new affirmation daily
+need to add dark mode legit - done
+maybe add good affirmations tab - done
+maybe add settings with dark mode toggle

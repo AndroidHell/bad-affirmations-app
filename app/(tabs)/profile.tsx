@@ -19,9 +19,9 @@ export default function BadAffirmationScreen() {
     const fetchDailyAffirmation = async () => {
       const today = new Date().toISOString().split("T")[0];
       const storedAffirmation = await AsyncStorage.getItem(
-        "badDailyAffirmation"
+        "goodDailyAffirmation"
       );
-      const storedDate = await AsyncStorage.getItem("badAffirmationDate");
+      const storedDate = await AsyncStorage.getItem("goodAffirmationDate");
 
       if (storedDate === today && storedAffirmation) {
         setAffirmation(storedAffirmation);
@@ -29,8 +29,8 @@ export default function BadAffirmationScreen() {
         const randomAffirmation = await fetchRandomAffirmation();
         if (randomAffirmation) {
           setAffirmation(randomAffirmation);
-          await AsyncStorage.setItem("badDailyAffirmation", randomAffirmation);
-          await AsyncStorage.setItem("badAffirmationDate", today);
+          await AsyncStorage.setItem("goodDailyAffirmation", randomAffirmation);
+          await AsyncStorage.setItem("goodAffirmationDate", today);
         }
       }
       setLoading(false); // Stop loading after fetching
@@ -46,10 +46,10 @@ export default function BadAffirmationScreen() {
   const fetchRandomAffirmation = async () => {
     try {
       const response = await fetch(
-        "https://bad-affirmations-api.netlify.app/.netlify/functions/BadAffirmations"
+        "https://bad-affirmations-api.netlify.app/.netlify/functions/GoodAffirmations"
       );
       const data = await response.json();
-      const affirmations = data.BadAffirmations; // Use the correct key here
+      const affirmations = data.GoodAffirmations; // Use the correct key here
       return affirmations[Math.floor(Math.random() * affirmations.length)];
     } catch (error) {
       console.error("Error fetching affirmations:", error);
@@ -63,8 +63,8 @@ export default function BadAffirmationScreen() {
     if (randomAffirmation) {
       setAffirmation(randomAffirmation);
       const today = new Date().toISOString().split("T")[0];
-      await AsyncStorage.setItem("badDailyAffirmation", randomAffirmation);
-      await AsyncStorage.setItem("badAffirmationDate", today);
+      await AsyncStorage.setItem("goodDailyAffirmation", randomAffirmation);
+      await AsyncStorage.setItem("goodAffirmationDate", today);
     }
     setLoading(false); // Stop loading after fetching
   };
