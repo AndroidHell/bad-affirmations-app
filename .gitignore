@@ -36,3 +36,6 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# misc
+bad-affirmations-app-944b936399b2.json
