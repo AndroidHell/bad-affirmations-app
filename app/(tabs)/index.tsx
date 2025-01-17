@@ -83,7 +83,7 @@ export default function BadAffirmationScreen() {
             {affirmation || "No affirmation available."}
           </Text>
           <TouchableOpacity style={styles.button} onPress={fetchNewAffirmation}>
-            <Text style={styles.buttonText}>Get a new shitty affirmation</Text>
+            <Text style={styles.buttonText}>Get a new bad affirmation</Text>
           </TouchableOpacity>
         </>
       )}
