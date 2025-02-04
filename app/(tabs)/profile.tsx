@@ -5,14 +5,19 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Share,
+  Pressable,
 } from "react-native";
+import * as Clipboard from "expo-clipboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-export default function BadAffirmationScreen() {
+export default function GoodAffirmationScreen() {
   const [affirmation, setAffirmation] = useState("");
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -33,15 +38,11 @@ export default function BadAffirmationScreen() {
           await AsyncStorage.setItem("goodAffirmationDate", today);
         }
       }
-      setLoading(false); // Stop loading after fetching
+      setLoading(false);
     };
 
     fetchDailyAffirmation();
   }, []);
-
-  // const fetchRandomAffirmation = () => {
-  //   return affirmations[Math.floor(Math.random() * affirmations.length)];
-  // };
 
   const fetchRandomAffirmation = async () => {
     try {
@@ -49,16 +50,16 @@ export default function BadAffirmationScreen() {
         "https://bad-affirmations-api.netlify.app/.netlify/functions/GoodAffirmations"
       );
       const data = await response.json();
-      const affirmations = data.GoodAffirmations; // Use the correct key here
+      const affirmations = data.GoodAffirmations;
       return affirmations[Math.floor(Math.random() * affirmations.length)];
     } catch (error) {
       console.error("Error fetching affirmations:", error);
-      return null; // Handle error by returning null
+      return null;
     }
   };
 
   const fetchNewAffirmation = async () => {
-    setLoading(true); // Show loading spinner while fetching
+    setLoading(true);
     const randomAffirmation = await fetchRandomAffirmation();
     if (randomAffirmation) {
       setAffirmation(randomAffirmation);
@@ -66,35 +67,77 @@ export default function BadAffirmationScreen() {
       await AsyncStorage.setItem("goodDailyAffirmation", randomAffirmation);
       await AsyncStorage.setItem("goodAffirmationDate", today);
     }
-    setLoading(false); // Stop loading after fetching
+    setLoading(false);
+  };
+
+  const handleShare = async () => {
+    const emojis = ["🙂", "😄", "😁", "🌟", "😎", "😸", "💖", "😃", "🌈", "🥳"];
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    try {
+      await Share.share({
+        message: `[${randomEmoji}] Today's affirmation: ${
+          affirmation || "No affirmation available."
+        }`,
+      });
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
+  const handleCopyAffirmation = async () => {
+    await Clipboard.setStringAsync(affirmation);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   const affirmationTextColor = colorScheme === "dark" ? "#FFF" : "#333";
 
   return (
-    <View style={styles.container}>
-      {loading ? (
-        <ActivityIndicator size="large" color="#FF69B4" /> // Show a spinner while loading
-      ) : (
-        <>
+    <Pressable style={styles.overlay} onPress={() => setCopied(false)}>
+      <View style={styles.container}>
+        {loading ? <ActivityIndicator size="large" color="#FF69B4" /> : null}
+
+        <Pressable onLongPress={handleCopyAffirmation}>
           <Text
-            style={[styles.affirmationText, { color: affirmationTextColor }]}
+            style={[
+              styles.affirmationText,
+              {
+                color: affirmationTextColor,
+                fontWeight: copied ? "bold" : "normal",
+              },
+            ]}
           >
             {affirmation || "No affirmation available."}
           </Text>
-          <TouchableOpacity style={styles.button} onPress={fetchNewAffirmation}>
+        </Pressable>
+
+        {copied && <Text style={styles.copyPopup}>Copied!</Text>}
+
+        <View style={styles.buttonCluster}>
+          <TouchableOpacity
+            style={[styles.button, loading && styles.disabledButton]}
+            onPress={fetchNewAffirmation}
+            disabled={loading}
+          >
             <Text style={styles.buttonText}>
               Get a new good affirmation, I guess
             </Text>
           </TouchableOpacity>
-        </>
-      )}
-      <StatusBar style="light" />
-    </View>
+
+          <TouchableOpacity style={styles.iconButton} onPress={handleShare}>
+            <Ionicons name="share-social" size={24} color="#FFF" />
+          </TouchableOpacity>
+        </View>
+        <StatusBar style="light" />
+      </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -106,16 +149,37 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     color: "#333",
   },
-  button: {
-    backgroundColor: "#FF69B4", // Hot pink color
-    paddingVertical: 15,
+  copyPopup: {
+    position: "absolute",
+    top: "40%",
+    backgroundColor: "lightgray",
+    color: "hotpink",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  buttonCluster: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    padding: 16,
     marginTop: 80,
+    gap: 20,
+  },
+  button: {
+    backgroundColor: "#FF69B4",
+    paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    elevation: 5,
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  iconButton: {
+    backgroundColor: "#FF69B4",
+    padding: 15,
+    borderRadius: 25,
     elevation: 5,
   },
   buttonText: {

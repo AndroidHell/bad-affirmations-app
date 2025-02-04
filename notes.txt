@@ -1,4 +1,5 @@
-need to fixed how it pulls new affirmation daily
-need to add dark mode legit - done
-maybe add good affirmations tab - done
-maybe add settings with dark mode toggle
+add a copy/share feature
+    copy text or have a share button
+add inspirational backgrounds?
+    - add maybe 6 that it cycles or randomly picks
+swap out to use ThemedView and ThemedText?
