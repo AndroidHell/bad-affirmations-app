@@ -44,7 +44,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="profile"
         options={{
           title: "Good Affirmations",
@@ -52,7 +52,7 @@ export default function TabLayout() {
             <FontAwesome size={28} name="smile-o" color={color} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="settings"
         options={{

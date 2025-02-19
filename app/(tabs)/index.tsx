@@ -7,8 +7,9 @@ import {
   ActivityIndicator,
   Pressable,
   Share,
+  Image,
 } from "react-native";
-import * as Clipboard from "expo-clipboard"; // ✅ Clipboard module is back
+import * as Clipboard from "expo-clipboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme } from "react-native";
@@ -18,6 +19,7 @@ export default function BadAffirmationScreen() {
   const [affirmation, setAffirmation] = useState("");
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -27,7 +29,10 @@ export default function BadAffirmationScreen() {
         "badDailyAffirmation"
       );
       const storedDate = await AsyncStorage.getItem("badAffirmationDate");
+      const storedImage = await AsyncStorage.getItem("badAffirmationImage");
+      const storedImageDate = await AsyncStorage.getItem("badImageDate");
 
+      // If the stored date is today and there's a stored affirmation, use them
       if (storedDate === today && storedAffirmation) {
         setAffirmation(storedAffirmation);
       } else {
@@ -38,6 +43,19 @@ export default function BadAffirmationScreen() {
           await AsyncStorage.setItem("badAffirmationDate", today);
         }
       }
+
+      // If the image is stored and the date is today, use the stored image
+      if (storedImageDate === today && storedImage) {
+        setBackgroundImage(storedImage);
+      } else {
+        const randomImage = await fetchRandomImage();
+        if (randomImage) {
+          setBackgroundImage(randomImage);
+          await AsyncStorage.setItem("badAffirmationImage", randomImage);
+          await AsyncStorage.setItem("badImageDate", today);
+        }
+      }
+
       setLoading(false);
     };
 
@@ -58,20 +76,57 @@ export default function BadAffirmationScreen() {
     }
   };
 
+  const fetchRandomImage = async () => {
+    try {
+      const response = await fetch(
+        "https://api.unsplash.com/photos/random?client_id=xSuGUpFLpRsogAUqJU4cgpsJfDeEmZjX6WhvONiC_Mo&collections=1831936"
+      );
+
+      const contentType = response.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        console.error("Invalid response format:", await response.text());
+        return null;
+      }
+
+      const data = await response.json();
+
+      if (!data || !data.urls || !data.urls.regular) {
+        console.warn("No image found in API response:", data);
+        return null;
+      }
+
+      return data.urls.regular;
+    } catch (error) {
+      console.error("Error fetching image:", error);
+      return null;
+    }
+  };
+
   const fetchNewAffirmation = async () => {
     setLoading(true);
     const randomAffirmation = await fetchRandomAffirmation();
+    const randomImage = await fetchRandomImage();
     if (randomAffirmation) {
       setAffirmation(randomAffirmation);
       const today = new Date().toISOString().split("T")[0];
       await AsyncStorage.setItem("badDailyAffirmation", randomAffirmation);
       await AsyncStorage.setItem("badAffirmationDate", today);
     }
+
+    if (randomImage) {
+      setBackgroundImage(randomImage);
+      await AsyncStorage.setItem("badAffirmationImage", randomImage);
+      await AsyncStorage.setItem(
+        "badImageDate",
+        new Date().toISOString().split("T")[0]
+      );
+    }
+
     setLoading(false);
   };
 
   const handleCopyAffirmation = async () => {
-    await Clipboard.setStringAsync(affirmation); // ✅ Now using Clipboard correctly
+    await Clipboard.setStringAsync(affirmation);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -90,7 +145,7 @@ export default function BadAffirmationScreen() {
     }
   };
 
-  const affirmationTextColor = colorScheme === "dark" ? "#FFF" : "#333";
+  const affirmationTextColor = colorScheme === "dark" ? "#FFF" : "#FFF";
 
   return (
     <Pressable style={styles.overlay} onPress={() => setCopied(false)}>
@@ -98,17 +153,27 @@ export default function BadAffirmationScreen() {
         {loading ? <ActivityIndicator size="large" color="#FF69B4" /> : null}
 
         <Pressable onLongPress={handleCopyAffirmation}>
-          <Text
-            style={[
-              styles.affirmationText,
-              {
-                color: affirmationTextColor,
-                fontWeight: copied ? "bold" : "normal",
-              },
-            ]}
-          >
-            {affirmation || "No affirmation available."}
-          </Text>
+          <View style={styles.card}>
+            {backgroundImage && (
+              <Image
+                source={{ uri: backgroundImage }}
+                style={styles.backgroundImage}
+              />
+            )}
+            <View style={styles.imageOverlay}>
+              <Text
+                style={[
+                  styles.affirmationText,
+                  {
+                    color: affirmationTextColor,
+                    fontWeight: copied ? "bold" : "normal",
+                  },
+                ]}
+              >
+                {affirmation || "No affirmation available."}
+              </Text>
+            </View>
+          </View>
         </Pressable>
 
         {copied && <Text style={styles.copyPopup}>Copied!</Text>}
@@ -145,7 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
     marginHorizontal: 20,
-    color: "#333",
+    color: "#fff",
   },
   copyPopup: {
     position: "absolute",
@@ -161,7 +226,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     padding: 16,
-    marginTop: 80,
+    marginBottom: 40,
+    marginTop: -40,
     gap: 20,
   },
   button: {
@@ -185,5 +251,34 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  card: {
+    width: "80%",
+    height: "80%",
+    borderRadius: 25,
+    overflow: "hidden",
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    backgroundColor: "#FFF",
+    marginTop: 20,
+    borderWidth: 6,
+    borderColor: "#FFF",
+  },
+
+  backgroundImage: {
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    resizeMode: "cover",
+  },
+
+  imageOverlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
 });
