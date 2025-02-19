@@ -19,8 +19,96 @@ export default function BadAffirmationScreen() {
   const [affirmation, setAffirmation] = useState("");
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const colorScheme = useColorScheme();
+
+  const cardBorderColor = colorScheme === "dark" ? "#222" : "#FFF";
+
+  const styles = StyleSheet.create({
+    overlay: {
+      flex: 1,
+    },
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    affirmationText: {
+      fontSize: 18,
+      textAlign: "center",
+      marginHorizontal: 20,
+      color: "#fff",
+    },
+    copyPopup: {
+      position: "absolute",
+      top: "40%",
+      backgroundColor: "lightgray",
+      color: "hotpink",
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      borderRadius: 5,
+    },
+    buttonCluster: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      alignItems: "center",
+      padding: 16,
+      marginBottom: 40,
+      marginTop: -40,
+      gap: 20,
+    },
+    button: {
+      backgroundColor: "#FF69B4",
+      paddingVertical: 15,
+      paddingHorizontal: 30,
+      borderRadius: 25,
+      elevation: 5,
+    },
+    disabledButton: {
+      opacity: 0.5,
+    },
+    iconButton: {
+      backgroundColor: "#FF69B4",
+      padding: 15,
+      borderRadius: 25,
+      elevation: 5,
+    },
+    buttonText: {
+      color: "#FFF",
+      fontSize: 16,
+      fontWeight: "bold",
+      textAlign: "center",
+    },
+    card: {
+      width: "80%",
+      height: "80%",
+      borderRadius: 25,
+      overflow: "hidden",
+      elevation: 5,
+      shadowColor: "#000",
+      shadowOpacity: 0.3,
+      shadowRadius: 10,
+      backgroundColor: "#FFF",
+      marginTop: 20,
+      borderWidth: 6,
+      borderColor: cardBorderColor,
+    },
+
+    backgroundImage: {
+      width: "100%",
+      height: "100%",
+      position: "absolute",
+      resizeMode: "cover",
+    },
+
+    imageOverlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.4)",
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    },
+  });
 
   useEffect(() => {
     const fetchDailyAffirmation = async () => {
@@ -196,89 +284,3 @@ export default function BadAffirmationScreen() {
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  affirmationText: {
-    fontSize: 18,
-    textAlign: "center",
-    marginHorizontal: 20,
-    color: "#fff",
-  },
-  copyPopup: {
-    position: "absolute",
-    top: "40%",
-    backgroundColor: "lightgray",
-    color: "hotpink",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-  },
-  buttonCluster: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    padding: 16,
-    marginBottom: 40,
-    marginTop: -40,
-    gap: 20,
-  },
-  button: {
-    backgroundColor: "#FF69B4",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-    elevation: 5,
-  },
-  disabledButton: {
-    opacity: 0.5,
-  },
-  iconButton: {
-    backgroundColor: "#FF69B4",
-    padding: 15,
-    borderRadius: 25,
-    elevation: 5,
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  card: {
-    width: "80%",
-    height: "80%",
-    borderRadius: 25,
-    overflow: "hidden",
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    backgroundColor: "#FFF",
-    marginTop: 20,
-    borderWidth: 6,
-    borderColor: "#FFF",
-  },
-
-  backgroundImage: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    resizeMode: "cover",
-  },
-
-  imageOverlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-  },
-});
